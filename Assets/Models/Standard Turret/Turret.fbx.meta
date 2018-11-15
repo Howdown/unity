@@ -1,19 +1,29 @@
 fileFormatVersion: 2
-guid: 490fe486658304ca6887fd910d5ed644
+guid: 8b8cdceb8eeb3084eaafca0ef404b580
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Turret
+    100004: Turret.001
     400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Base_MachineGun_L01_Shadow
+    400002: Turret
+    400004: Turret.001
+    2100000: Turret_Metal
+    2100002: Turret_Metal2
+    2100004: Turret_GunMetal
+    2300000: Turret
+    2300002: Turret.001
+    3300000: Turret
+    3300002: Turret.001
+    4300000: Turret.001
+    4300002: Turret
   externalObjects: {}
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -53,7 +63,7 @@ ModelImporter:
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
-    indexFormat: 1
+    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
