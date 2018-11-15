@@ -2,13 +2,26 @@
 {
     using UnityEngine;
 
-    public class Turret : MonoBehaviour {
+    public class Turret : MonoBehaviour
+    {
 
         private Transform target;
-        public float range = 15f;
-        public string enemyTag = "Enemy";
-        public Transform partToRotate;
-        public float turnSpeed = 10f;
+
+        public float range = 15f; 
+
+        public string enemyTag = "Enemy"; 
+
+        public Transform partToRotate; 
+
+        public float turnSpeed = 10f; 
+
+        public float fireRate = 1f;
+
+        private float fireCountdown = 0f;
+
+        public GameObject bulletprefab; 
+
+        public Transform firePoint; 
 
         public void Start()
         {
@@ -17,43 +30,60 @@
 
         public void UpdateTarget()
         {
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag(this.enemyTag);
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag); 
             float shortestDistance = Mathf.Infinity;
             GameObject nearestEnemy = null;
             foreach (GameObject enemy in enemies)
             {
-                float distanceToEnemy = Vector3.Distance(this.transform.position, enemy.transform.position);
+                float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
                 if (distanceToEnemy < shortestDistance)
                 {
                     shortestDistance = distanceToEnemy;
                     nearestEnemy = enemy;
                 }
             }
-            if (nearestEnemy != null && shortestDistance <= this.range)
+            if (nearestEnemy != null && shortestDistance <= range)
             {
-                this.target = nearestEnemy.transform;
+                target = nearestEnemy.transform;
             }
             else
             {
-                this.target = null;
+                target = null;
             }
         }
 
         public void Update()
         {
-            if (this.target == null)
-                return;
-
-            Vector3 dir = this.target.position - this.transform.position;
+            if (target == null) return;
+            
+            Vector3 dir = target.position - transform.position;
             Quaternion lookRotation = Quaternion.LookRotation(dir);
-            Vector3 rotation = Quaternion.Lerp(this.partToRotate.rotation, lookRotation, Time.deltaTime * this.turnSpeed).eulerAngles;
-            this.partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+            Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * turnSpeed)
+                .eulerAngles;
+            partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+
+            if (fireCountdown <= 0f)
+            {
+                
+                Shoot();
+                fireCountdown = 1f / fireRate;
+            }
+            fireCountdown -= Time.deltaTime;
+        }
+
+        public void Shoot()
+        {
+            
+            GameObject bulletGo = (GameObject)Instantiate(bulletprefab, firePoint.position, firePoint.rotation);
+            Bullet bullet = bulletGo.GetComponent<Bullet>();
+
+            if (bullet != null) bullet.Seek(target);
         }
 
         public void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(this.transform.position, this.range);
+            Gizmos.DrawWireSphere(transform.position, range);
         }
     }
 }
